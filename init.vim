@@ -5,15 +5,16 @@ set nocompatible
 
 call plug#begin('~/.vim/plugged')
 
-" Plug 'flazz/vim-colorschemes'
-Plug 'tpope/vim-fugitive'
-Plug 'altercation/vim-colors-solarized'
-Plug 'pangloss/vim-javascript'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-fugitive' " git
+
+Plug 'morhetz/gruvbox'
+
+Plug 'justinmk/vim-dirvish'
 Plug 'mileszs/ack.vim'
-Plug 'sheerun/vim-polyglot'
-Plug 'mattn/emmet-vim'
+
+Plug 'pangloss/vim-javascript'    " JavaScript support
+Plug 'leafgarland/typescript-vim' " TypeScript syntax
+Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 
 call plug#end()
 
@@ -56,10 +57,10 @@ set splitright
 "autocmd BufWritePre * :%s/\s\+$//e
 
 " recognize Capfile, Gemfile, treetop
-autocmd BufRead,BufNewFile *.ru set filetype=ruby
-autocmd BufRead,BufNewFile Capfile set filetype=ruby
-autocmd BufRead,BufNewFile Gemfile set filetype=ruby
-autocmd BufRead,BufNewFile *.treetop set filetype=treetop
+" autocmd BufRead,BufNewFile *.ru set filetype=ruby
+" autocmd BufRead,BufNewFile Capfile set filetype=ruby
+" autocmd BufRead,BufNewFile Gemfile set filetype=ruby
+" autocmd BufRead,BufNewFile *.treetop set filetype=treetop
 
 " Reveal current file in tree
 map <leader>R :NERDTreeFind<CR>
@@ -68,19 +69,16 @@ map <leader>R :NERDTreeFind<CR>
 map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
 
 " Because I love these from TM
-imap <C-L> <space>=><space>
-imap <D-Return> <ESC>o
+" imap <C-L> <space>=><space>
+" imap <D-Return> <ESC>o
 
 " Because it works everywhere else, and I don't know of a better way to do
 " forward delete, and I don't really need un-tab in insert mode.
 imap <C-D> <DEL>
 
-" Symbols and strings
-nmap <leader>: ds"i:<Esc>e
-nmap <leader>" bhxcsw"
-
-" object && object.method
-map <leader>& mayB`ai<space>&&<space><esc>pl
+" Symbols andstrings
+" nmap <leader>: ds"i:<Esc>e
+" nmap <leader>" bhxcsw"
 
 " Make Y consistent with D, C
 nnoremap Y y$
@@ -98,20 +96,6 @@ nmap <C-k> <C-u>
 " Store temporary files in a central spot
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-
-map <D-r> :!ruby %<CR>
-
-function! Camelize(name)
-  return substitute(a:name, '\v%(^(.)|_(.))', '\u\1\u\2', 'g')
-endfunction
-
-function! ModelName()
-  return substitute(Filename('', 'model'), 's_controller', '', '')
-endfunction
-
-function! CamelModelName()
-  return Camelize(ModelName())
-endfunction
 
 " Make C-w o (only window) reversible by opening a tab
 nnoremap <C-W>O :tabnew %<CR>
@@ -188,9 +172,6 @@ inoremap <c-tab> <c-r>=InsertTabWrapper ("startkey")<CR>
 " ] allows right cursor to move from end of one line to beginning of next line when in insert or replace mode
 :set whichwrap+=<>[]
 
-" Spell checking
-:noremap sc :set spell!<CR>
-
 " Press F4 to toggle highlighting on/off.
 noremap <leader>hs :set hls!<CR>
 
@@ -217,12 +198,16 @@ set laststatus=2
 set statusline=%{fugitive#statusline()}
 set statusline+=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
 
-set background=dark
+"set background=light
+"set background=dark
 " colorscheme jellybeans
-let g:solarized_termcolors=256
-colorscheme solarized
+"let g:solarized_termcolors=256
+"colorscheme solarized
+colorscheme gruvbox
+"set background=light
+"set termguicolors
 
-let NERDTreeShowLineNumbers=1
+"let NERDTreeShowLineNumbers=1
 
 " selecting text with mouse does not enter visual mode
 set mouse=v
@@ -232,5 +217,3 @@ nnoremap <esc> :noh<return><esc>
 nnoremap <esc>^[ <esc>^[
 
 imap jj <esc>
-
-let g:mustache_abbreviations = 1
